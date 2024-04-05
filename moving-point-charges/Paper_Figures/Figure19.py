@@ -181,7 +181,7 @@ for i, label in zip((2, 5, 8, 11, 14, 17), ('$E_x$ [N/C]', '$E_y$ [N/C]', '$E_z$
 
 
 savename = 'Figure19'
-plt.savefig('C:/Users/91829/Desktop/IITB Academics/Semester 6/PH 444 - Electromagnetic Theory/Project/Code/moving-point-charges/Paper_Figures/Figs/'+savename+'.pdf', format='pdf',
+plt.savefig(os.path.dirname(os.path.realpath(__file__))+'/Figs/'+savename+'.pdf', format='pdf',
             bbox_inches='tight', pad_inches=0.02, dpi=500)
 
 # %% Animation
@@ -330,7 +330,7 @@ def _init_animate():
 dt = 2*np.pi/charges[0].w/24
 ani = FuncAnimation(fig, _update_animation, interval=1000/12,
                     frames=120, blit=False, init_func=_init_animate)
-ani.save('C:/Users/91829/Desktop/IITB Academics/Semester 6/PH 444 - Electromagnetic Theory/Project/Code/moving-point-charges/Paper_Figures/Animations/'+savename+'.mp4',
+ani.save(os.path.dirname(os.path.realpath(__file__))+'/Animations/'+savename+'.mp4',
          writer=animation.FFMpegWriter(fps=12), dpi=500)
 end_time = time.time()
 print(f"Time taken to execute: {end_time - start_time} seconds")

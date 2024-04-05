@@ -290,7 +290,7 @@ def _init_animate():
 dt = t_end/239
 ani = FuncAnimation(fig, _update_animation, interval=1000/24,
                     frames=240, blit=False, init_func=_init_animate)
-ani.save('C:/Users/91829/Desktop/IITB Academics/Semester 6/PH 444 - Electromagnetic Theory/Project/Code/moving-point-charges/Paper_Figures/Animations/'+savename+'.mp4',
+ani.save(os.path.dirname(os.path.realpath(__file__))+'/Animations/'+savename+'.mp4',
          writer=animation.FFMpegWriter(fps=24), dpi=500)
 end_time = time.time()
 print(f"Time taken to execute: {end_time - start_time} seconds")
