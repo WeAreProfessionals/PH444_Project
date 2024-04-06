@@ -44,12 +44,12 @@ Vmin = Vmax*log_scale
 Amin = Amax*log_scale
 Smin = Smax*log_scale
 
-initial_speed = 0.99*c
-x_stop = 30e-9
+max_speed = 0.33*c
+x_acc = 30e-9
 
-acceleration = 0.5*initial_speed**2/x_stop
-deceleration = 0.5*initial_speed**2/x_stop
-t_end = initial_speed/deceleration
+acceleration = 0.5*max_speed**2/x_acc
+deceleration = 0.5*max_speed**2/x_acc
+t_end = 3*max_speed/deceleration
 charges = LinearAcceleratingDeceleratingCharge(
     pos_charge=True, acceleration = acceleration, deceleration=deceleration, stop_t=t_end)
 
