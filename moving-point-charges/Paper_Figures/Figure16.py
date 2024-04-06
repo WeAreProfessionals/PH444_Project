@@ -144,7 +144,7 @@ for i, label in zip((2, 5, 8), ('$E_x$ [N/C]', '$E_y$ [N/C]', '$B_z$ [T]')):
     E_cbar = plt.colorbar(ims[i], cax=Ecax)
     E_cbar.ax.set_ylabel(label, rotation=270, labelpad=12)
 
-savename = 'Figure17'
+savename = 'Figure16'
 plt.savefig(os.path.dirname(os.path.realpath(__file__))+'/Figs/'+savename+'.pdf', format='pdf',
             bbox_inches='tight', pad_inches=0.02, dpi=500)
 end_time = time.time()
