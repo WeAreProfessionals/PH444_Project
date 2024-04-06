@@ -1,7 +1,7 @@
 import subprocess
 import os
 
-def run_python_scripts(start=1, end=19):
+def run_python_scripts(start=1, end=20):
     for i in range(start, end + 1):
         script_name = f"{os.path.dirname(os.path.realpath(__file__))}\Figure{i}.py"
         print(f"Running {script_name}...")
@@ -21,3 +21,4 @@ def run_python_scripts(start=1, end=19):
 
 if __name__ == "__main__":
     run_python_scripts()
+ 

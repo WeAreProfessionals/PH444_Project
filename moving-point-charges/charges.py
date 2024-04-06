@@ -419,3 +419,78 @@ class LinearVelocityCharge(Charge):
 
     def zacc(self, t):
         return 0
+class LinearAcceleratingDeceleratingCharge(Charge):
+    """Point charge accelerates in x direction starting at origin."""
+
+    def __init__(self, pos_charge=True, acceleration=0.1*c, deceleration = 0.1*c, stop_t=None, acc_impulse_t = None, dec_impulse_t = None):
+        super().__init__(pos_charge)
+        self.acceleration = acceleration
+        self.deceleration = deceleration
+        if stop_t is None:
+            self.stop_t = 0.9999*c/acceleration  # so v is never greater than c
+        else:
+            self.stop_t = stop_t
+            
+        if acc_impulse_t is None : 
+            self.acc_impulse_t = stop_t/3
+        else:
+            self.acc_impulse_t = acc_impulse_t
+            
+        if dec_impulse_t is None:
+            self.dec_impulse_t = 2*stop_t/3
+        else:
+            self.dec_impulse_t = dec_impulse_t
+            
+
+    def xpos(self, t):
+        xpos = 0.5*self.acceleration*t**2
+        xpos[t > self.acc_impulse_t] = 0.5*self.acceleration*self.acc_impulse_t**2 + \
+            self.acceleration*self.acc_impulse_t * (t[t > self.acc_impulse_t]-self.acc_impulse_t)
+        
+        xpos[t > self.dec_impulse_t] = 0.5*self.acceleration*self.acc_impulse_t**2 + \
+            self.acceleration*self.acc_impulse_t * (self.dec_impulse_t-self.acc_impulse_t) + \
+            (self.acceleration*self.acc_impulse_t - self.deceleration*(t[t > self.dec_impulse_t]-self.dec_impulse_t)) * (t[t > self.dec_impulse_t]-self.dec_impulse_t) - \
+            0.5*self.deceleration*(t[t > self.dec_impulse_t]-self.dec_impulse_t)**2
+        
+        xpos[t < 0] = 0
+
+        xpos[t > self.stop_t] = 0.5*self.acceleration*self.stop_t**2 + \
+            self.acceleration*self.acc_impulse_t * (self.dec_impulse_t-self.acc_impulse_t) + \
+            (self.acceleration*self.acc_impulse_t - self.deceleration*(self.stop_t-self.dec_impulse_t)) * (self.stop_t-self.dec_impulse_t) - \
+            0.5*self.deceleration*(self.stop_t-self.dec_impulse_t)**2
+        
+        return xpos
+
+    def ypos(self, t):
+        return 0
+
+    def zpos(self, t):
+        return 0
+
+    def xvel(self, t):
+        xvel = self.acceleration*t
+        xvel[t > self.acc_impulse_t] = self.acceleration*self.acc_impulse_t
+        xvel[t > self.dec_impulse_t] = self.acceleration*self.acc_impulse_t - self.deceleration*(t[t > self.dec_impulse_t]-self.dec_impulse_t)
+        xvel[t < 0] = 0
+        xvel[t > self.stop_t] = self.acceleration*self.acc_impulse_t - self.deceleration*(self.stop_t-self.dec_impulse_t)
+        return xvel
+
+    def yvel(self, t):
+        return 0
+
+    def zvel(self, t):
+        return 0
+
+    def xacc(self, t):
+        xacc = self.acceleration*np.ones(t.shape)
+        xacc[t > self.acc_impulse_t] = 0
+        xacc[t > self.dec_impulse_t] = -self.deceleration
+        xacc[t < 0] = 0
+        xacc[t > self.stop_t] = 0
+        return xacc
+
+    def yacc(self, t):
+        return 0
+
+    def zacc(self, t):
+        return 0
